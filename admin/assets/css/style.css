@@ -1843,6 +1843,7 @@ input[type=checkbox] {
 }
 .panel .panel-body {
   padding: 20px;
+  min-height: 325px;
 }
 
 .table-dashed th, .table-dashed td {
@@ -12356,6 +12357,7 @@ a.ck.ck-button:focus {
   }
   .panel .panel-body {
     padding: 15px;
+    min-height: 325px;
   }
   .btn-flush {
     font-size: 14px;
@@ -13348,6 +13350,7 @@ a.ck.ck-button:focus {
   }
   .panel .panel-body {
     padding: 10px;
+    min-height: 325px;
   }
   .dropdown-menu {
     padding: 5px 0;
