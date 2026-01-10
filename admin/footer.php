@@ -20,6 +20,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- for demo purpose -->
 <script>
+    // toastr initialize
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showDuration": "300",
+        "hideDuration": "300",
+        "showEasing": "swing",
+        "hideEasing": "linear"
+    };
+
     var rtlReady = $('html').attr('dir', 'ltr');
     if (rtlReady !== undefined) {
         localStorage.setItem('layoutDirection', 'ltr');
@@ -28,7 +41,7 @@
         $(".preloader").hide();
     }, 500);
 
-    $("#logOut").on("click", function(e) {
+    $(".logOut").on("click", function(e) {
         $.ajax({
             type: 'POST',
             url: '/API/adminApi.php',
@@ -61,6 +74,12 @@
 
     $("#navClose").click(function() {
         $(this).find("i").toggleClass("rotate-180");
+    });
+
+    // For dark-light mode theme icon toggle
+    $("#darkTheme, #lightTheme").click(function(){
+        $("#darkTheme").toggleClass("d-none");
+        $("#lightTheme").toggleClass("d-none");
     });
 </script>
 <!-- for demo purpose -->

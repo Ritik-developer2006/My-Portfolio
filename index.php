@@ -168,26 +168,6 @@ include_once("header.php");
                           <div class="client-details">
                             <h6 class="client-name"><?php echo $td['full_name']; ?></h6>
                             <span class="client-role"><?php echo $td['subject']; ?></span>
-                            <span class="client-role ml-4">
-                              <?php
-                              $createdAt = strtotime($td['created_at']);
-                              $now = time();
-
-                              $diff = $now - $createdAt;
-
-                              if ($diff < 60) {
-                                echo $diff . " s ago";
-                              } elseif ($diff < 3600) {
-                                echo floor($diff / 60) . " m ago";
-                              } elseif ($diff < 86400) {
-                                echo floor($diff / 3600) . " h ago";
-                              } elseif ($diff < 172800) {
-                                echo "1 day ago";
-                              } else {
-                                echo floor($diff / 86400) . " days ago";
-                              }
-                              ?>
-                            </span>
                           </div>
                         </div>
                       </div><i class="icon ion-md-quote review-icon"></i>
@@ -195,6 +175,26 @@ include_once("header.php");
                     <p class="review-content"><?php echo $td['description']; ?></p>
                     <span class="see-more text-primary" style="cursor:pointer;">
                       See more
+                    </span>
+                    <span class="client-role float-right" style="font-size: 12px !important;">
+                      <?php
+                      $createdAt = strtotime($td['created_at']);
+                      $now = time();
+
+                      $diff = $now - $createdAt;
+
+                      if ($diff < 60) {
+                        echo $diff . " s ago";
+                      } elseif ($diff < 3600) {
+                        echo floor($diff / 60) . " m ago";
+                      } elseif ($diff < 86400) {
+                        echo floor($diff / 3600) . " h ago";
+                      } elseif ($diff < 172800) {
+                        echo "1 day ago";
+                      } else {
+                        echo floor($diff / 86400) . " days ago";
+                      }
+                      ?>
                     </span>
                   </div>
                 </div>
@@ -572,7 +572,7 @@ include_once("header.php");
         <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">X</a>
       </div>
       <div class="modal-body">
-       <div class="contact-section single-section" id="project_container">
+        <div class="contact-section single-section" id="project_container">
           <div class="row">
             <div class="col-12" id="your_project">
               <!-- data come through ajax -->
@@ -605,5 +605,5 @@ include_once("header.php");
   </div>
 </div>
 <?php
-  include("footer.php")
+include("footer.php")
 ?>

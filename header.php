@@ -70,18 +70,16 @@ $skills_data = mysqli_fetch_all($result7, MYSQLI_ASSOC);
     <!-- Required meta tags-->
     <meta charset="utf-8">
     <!-- Title-->
-    <title>It's Ritik Developer</title>
+    <title>Ritik Kumar | Personal Portfolio</title>
     <!-- Description-->
-    <meta name="description" content="Personal Portfolio Template">
+    <meta name="description" content="Personal portfolio website showcasing my web development projects, technical skills, professional experience, and blogs.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicons-->
     <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/myLogo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/myLogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/myLogo.png">
     <!-- Web fonts-->
-    <link
-        href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i&amp;display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i&amp;display=swap" rel="stylesheet">
     <!-- CSS vendors-->
     <link rel="stylesheet" href="css/bootstrap-custom.css">
     <link rel="stylesheet" href="css/ionicons.min.css">
@@ -108,13 +106,15 @@ $skills_data = mysqli_fetch_all($result7, MYSQLI_ASSOC);
         body::before {
             z-index: 1;
         }
-        .content-description{
+
+        .content-description {
             margin-bottom: 0;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         /* .home-area{
             z-index: 5 !important;
         } */

@@ -5,10 +5,10 @@ require_once("header.php");
 <!-- main content start -->
 <div class="main-content">
     <div class="dashboard-breadcrumb mb-25">
-        <h2>Tabular Dashboard</h2>
+        <h2>eCommerce Dashboard</h2>
         <div class="input-group dashboard-filter">
             <input type="text" class="form-control" name="basic" id="dashboardFilter" readonly>
-            <label for="dashboardFilter" class="input-group-text"><i class="fa-regular fa-calendar"></i></label>
+            <label for="dashboardFilter" class="input-group-text"><i class="fa-light fa-calendar-days"></i></label>
         </div>
     </div>
     <div class="row mb-25">

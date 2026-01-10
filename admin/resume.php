@@ -1,8 +1,6 @@
 <?php
 require_once("header.php");
 ?>
-<link rel="stylesheet" href="assets/css/jquery.uploader.css">
-<link rel="stylesheet" href="assets/css/dropzone.min.css">
 
 <!-- main content start -->
 <div class="main-content">
@@ -79,279 +77,62 @@ require_once("header.php");
     </div>
 
     <?php
-        require_once("footer.php");
+    require_once("footer.php");
     ?>
-    <script>
-        // For hanlde range
-        function initRangeHandlers() {
-            document.querySelectorAll('.range').forEach(function(rangeInput) {
-                const id = rangeInput.id.replace('per_knowledge', '');
-                const rangeOutput = document.getElementById('rangeValue' + id);
+    <div class="modal fade" id="delete_education" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h3 class="modal-title fs-6" id="staticBackdropLabel">Confirmation</h3>
+                    <button type="button" class="btn-close m-0 close_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                </div>
+                <div class="modal-body" style="font-size: small;">
+                    Are you sure to delete this education?
+                    <input type="hidden" id="current_delete_id" value="">
+                </div>
+                <div class="modal-footer p-2 border-top">
+                    <button type="button" class="btn btn-sm btn-secondary close_modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_now">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // Set initial value
-                if (rangeOutput) {
-                    rangeOutput.textContent = rangeInput.value;
-                }
+    <div class="modal fade" id="delete_experience" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h3 class="modal-title fs-6" id="staticBackdropLabel">Confirmation</h3>
+                    <button type="button" class="btn-close m-0 close_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                </div>
+                <div class="modal-body" style="font-size: small;">
+                    Are you sure to delete this experience?
+                    <input type="hidden" id="current_delete_experience_id" value="">
+                </div>
+                <div class="modal-footer p-2 border-top">
+                    <button type="button" class="btn btn-sm btn-secondary close_modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_experience_now">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // Update on input
-                rangeInput.addEventListener('input', function() {
-                    if (rangeOutput) {
-                        rangeOutput.textContent = this.value;
-                    }
-                });
-            });
-        }
-
-        getAlleducation();
-
-        function getAlleducation() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getAlleducation'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card ${item.id != 1 ? 'mt-3' : ''}">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.education_name}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_education" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_education text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="edu_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-                                                    <div class="col-sm-6">
-                                                        <label for="university${item.id}" class="form-label">Input with icon</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='university' value="${item.university}" class="form-control ps-2" id="university${item.id}" placeholder="Your university">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <label for="college${item.id}" class="form-label">Input with icon</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='college' value="${item.college_name}" class="form-control ps-2" id="college${item.id}" placeholder="Your college">
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-sm-6">
-                                                        <label for="from_year${item.id}" class="form-label">Input date</label>
-                                                        <input type="date" readonly name='from_year' value="${item.from_year}" class="form-control" id="from_year${item.id}">
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <label for="to_year${item.id}" class="form-label">Input date</label>
-                                                        <input type="date" readonly name='to_year' value="${item.to_year}" class="form-control" id="to_year${item.id}">
-                                                    </div>
-                                                    
-                                                    <div class="col-sm-12">
-                                                        <label for="description${item.id}" class="form-label">Example textarea</label>
-                                                        <textarea class="form-control" rows='5' readonly name="description" id="description${item.id}">${item.description}</textarea>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#education_container").html(html);
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-
-        getAllexperience();
-
-        function getAllexperience() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getAllexperiences'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card ${item.id != 1 ? 'mt-3' : ''}">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.job_title}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_experince" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_experince text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="ex_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-                                                    <div class="col-sm-6">
-                                                        <label for="job_title${item.id}" class="form-label">Input with icon</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='job_title' value="${item.job_title}" class="form-control ps-2" id="job_title${item.id}" placeholder="Your college">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <label for="company_name${item.id}" class="form-label">Input with icon</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='company_name' value="${item.company_name}" class="form-control ps-2" id="company_name${item.id}" placeholder="Company Name">
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-sm-6">
-                                                        <label for="ex_from_year${item.id}" class="form-label">Input date</label>
-                                                        <input type="date" readonly name='from_year' value="${item.from_year}" class="form-control" id="ex_from_year${item.id}">
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <label for="ex_to_year${item.id}" class="form-label">Input date</label>
-                                                        <input type="date" readonly name='to_year' value="${item.to_year}" class="form-control" id="ex_to_year${item.id}">
-                                                    </div>
-                                                    
-                                                    <div class="col-sm-12">
-                                                        <label for="ex_description${item.id}" class="form-label">Example textarea</label>
-                                                        <textarea class="form-control" rows="5" readonly name="description" id="ex_description${item.id}">${item.description}</textarea>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#experience_container").html(html);
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-
-        getAllskills();
-
-        function getAllskills() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getAllSkills'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card col-12${item.id != 1 ? ' mt-3' : ''}">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.skill}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_skill" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_skill text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="skill_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-                                                    <div class="col-sm-6">
-                                                        <label for="skill${item.id}" class="form-label">Input with icon</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='skill' value="${item.skill}" class="form-control ps-2" id="skill${item.id}" placeholder="Your skill">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <label for="per_knowledge${item.id}" class="form-label">Example range</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon ps-4 pe-4" style="border-right: 1px solid #e5e5e5;">
-                                                                <output for="per_knowledge${item.id}" class="rangeValue" id="rangeValue${item.id}" aria-hidden="true"></output>%
-                                                            </span>
-                                                            <input type="range" readonly class="form-range range ps-2 pe-2" min="0" max="100" value="${item.per_knowledge}" rows="5" id="per_knowledge${item.id}">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#skill_container").html(html);
-                            initRangeHandlers();
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-    </script>
+    <div class="modal fade" id="delete_skill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h3 class="modal-title fs-6" id="staticBackdropLabel">Confirmation</h3>
+                    <button type="button" class="btn-close m-0 close_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                </div>
+                <div class="modal-body" style="font-size: small;">
+                    Are you sure to delete this skill?
+                    <input type="hidden" id="current_delete_skill_id" value="">
+                </div>
+                <div class="modal-footer p-2 border-top">
+                    <button type="button" class="btn btn-sm btn-secondary close_modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_skill_now">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/resume.js"></script>

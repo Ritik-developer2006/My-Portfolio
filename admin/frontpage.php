@@ -3,57 +3,7 @@ require_once("header.php");
 ?>
 <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet">
 <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-
-<style>
-    .filepond--credits {
-        display: none !important;
-    }
-
-    .filepond--root {
-        min-height: 60px;
-    }
-
-    .card,
-    .card-body,
-    .col-lg-4,
-    .col-md-5 {
-        overflow: visible !important;
-    }
-
-    .filepond--item {
-        width: calc(25% - 0.5em);
-    }
-
-    .filepond--image-preview-overlay {
-        display: none !important;
-    }
-
-    .select2-container--default .select2-selection--single {
-        background: transparent;
-        border: 0px solid black !important;
-    }
-
-    .select2-container .select2-selection--single {
-        box-sizing: border-box;
-        cursor: pointer;
-        display: block;
-        height: 33px;
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    .select2-selection__rendered {
-        margin-top: 4px !important;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 26px;
-        position: absolute;
-        top: 5px !important;
-        right: 1px;
-        width: 20px;
-    }
-</style>
+<link rel="stylesheet" href="assets/css/custom.css">
 
 <!-- main content start -->
 <div class="main-content">
@@ -70,7 +20,7 @@ require_once("header.php");
                     </div>
                     <div><i class="fa-solid fa-circle-plus" id="add_education" style="cursor: pointer"></i></div>
                 </div>
-                <div class="panel-body d-flex justify-content-center align-items-center gap-3" id="menu_container" style="min-height: auto;">
+                <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="menu_container" style="min-height: auto;">
                     <!-- data come through ajax -->
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div>
@@ -92,7 +42,7 @@ require_once("header.php");
                     </div>
                     <div><i class="fa-solid fa-circle-plus"></i></div>
                 </div>
-                <div class="panel-body d-flex flex-column justify-content-center align-items-center" id="slider_container">
+                <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="slider_container" style="min-height: auto;">
                     <!-- data come through ajax -->
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div>
@@ -114,7 +64,7 @@ require_once("header.php");
                     </div>
                     <div><i class="fa-solid fa-circle-plus"></i></div>
                 </div>
-                <div class="panel-body d-flex flex-column justify-content-center align-items-center" id="utility_container">
+                <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="utility_container" style="min-height: auto;">
                     <!-- data come through ajax -->
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div>
@@ -132,247 +82,43 @@ require_once("header.php");
     <?php
     require_once("footer.php");
     ?>
+    <div class="modal fade" id="delete_menu" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h3 class="modal-title fs-6" id="staticBackdropLabel">Confirmation</h3>
+                    <button type="button" class="btn-close m-0 close_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                </div>
+                <div class="modal-body" style="font-size: small;">
+                    Are you sure to delete this menu?
+                    <input type="hidden" id="current_delete_id" value="">
+                </div>
+                <div class="modal-footer p-2 border-top">
+                    <button type="button" class="btn btn-sm btn-secondary close_modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_now">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_slider" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h3 class="modal-title fs-6" id="staticBackdropLabel">Confirmation</h3>
+                    <button type="button" class="btn-close m-0 close_slider_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                </div>
+                <div class="modal-body" style="font-size: small;">
+                    Are you sure to delete this slider?
+                    <input type="hidden" id="current_delete_slider_id" value="">
+                </div>
+                <div class="modal-footer p-2 border-top">
+                    <button type="button" class="btn btn-sm btn-secondary close_slider_modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="delete_slider_now">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
-
-    <script>
-        function uploadFile() {
-
-            FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginImagePreview);
-
-            // SINGLE UPLOAD
-            document.querySelectorAll('.singleUpload').forEach(input => {
-
-                if (FilePond.find(input)) return;
-
-                FilePond.create(input, {
-                    allowMultiple: false,
-                    acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
-                    allowFileTypeValidation: true,
-                    allowFileSizeValidation: true,
-                    labelIdle: `
-                <i class="fa-solid fa-cloud-arrow-up fa-2x"></i>
-                <h4 style="font-size:12px;font-weight:700;">Single Upload</h4>
-                `,
-                    imagePreviewHeight: 70,
-                    styleItemPanelAspectRatio: 1
-                });
-            });
-        }
-
-        getAllMenu();
-
-        function getAllMenu() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getAllMenu'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.name}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_education" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_education text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="edu_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-                                                    <div class="col-sm-12">
-                                                        <label for="name${item.id}" class="form-label">Menu Name</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='name' value="${item.name}" class="form-control ps-2" id="name${item.id}" placeholder="Your university">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#menu_container").removeClass("justify-content-center");
-                            $("#menu_container").html(html);
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-
-        getAllSlider();
-
-        function getAllSlider() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getAllSlider'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.name}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_education" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_education text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="edu_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-                                                    <div class="col-sm-12">
-                                                        <label for="name${item.id}" class="form-label">Menu Name</label>
-                                                        <div class="input-group-with-icon">
-                                                            <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
-                                                                <i class="fa-solid fa-pen-nib"></i>
-                                                            </span>
-                                                            <input type="text" readonly name='name' value="${item.name}" class="form-control ps-2" id="name${item.id}" placeholder="Your university">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#slider_container").removeClass("justify-content-center");
-                            $("#slider_container").html(html);
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-
-        getLogoBck();
-
-        function getLogoBck() {
-            $.ajax({
-                type: 'POST',
-                url: '/API/adminApi.php',
-                dataType: 'JSON',
-                data: JSON.stringify({
-                    method: 'getLogoBck'
-                }),
-                contentType: "application/json",
-                beforeSend: function() {
-                    $(".preloader").show();
-                },
-                complete: function() {
-                    $(".preloader").hide();
-                },
-                success: function(response) {
-                    // console.log(response);
-                    let status = response.status;
-                    if (status == 1) {
-                        let html = "";
-                        if (response.data.length > 0) {
-                            $.each(response.data, function(index, item) {
-                                html += `<div class="card col-12 ${item.id != 1 ? 'mt-3' : ''}">
-                                        <div class="card-header d-flex justify-content-between">
-                                            <div>${item.project_name}</div>
-                                            <div>
-                                            <i class="fa-solid fa-pen-to-square edit_experince" style="cursor: pointer;"></i>
-                                            <i class="fa-solid fa-trash delete_experince text-danger" style="cursor: pointer;"></i>
-                                            </div>
-                                            <input type="hidden" value="${item.id}" class="ex_id">
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="post" action="#">
-                                                <div class="row g-3">
-
-                                                    <div class="col-lg-6 d-flex gap-4">
-                                                        <div>
-                                                            <label for="logo${item.id}" class="form-label">Prev. Image</label>
-                                                            <div class="">
-                                                                <img src="../img/${item.logo}" width="150" class="border">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-fill">
-                                                            <label class="form-label" for="logo${item.id}">New Image
-                                                            </label>
-                                                            <input type="text" id="logo${item.id}" class="singleUpload">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6 d-flex gap-4">
-                                                        <div>
-                                                            <label for="bck_img${item.id}" class="form-label">Prev. Image</label>
-                                                            <div class="">
-                                                                <img src="../img/${item.bck_img}" width="150" class="border">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-fill">
-                                                            <label class="form-label" for="bck_img${item.id}">New Image
-                                                            </label>
-                                                            <input type="text" id="bck_img${item.id}" class="singleUpload">
-                                                        </div>
-                                                    </div>
-                                    
-                                                    <div class="col-sm-12 d-none">
-                                                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>`;
-                            });
-                            $("#utility_container").html(html);
-                            getAllCategories();
-                            uploadFile();
-                        }
-                    }
-                },
-                error: function() {
-                    console.log("Something went wrong, while geting data of educations!");
-                }
-            });
-        };
-    </script>
+    <script src="assets/js/frontpage.js"></script>

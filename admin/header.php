@@ -2,7 +2,7 @@
 session_start();
 
 if (empty($_SESSION['isLogin'])) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -27,83 +27,11 @@ if (empty($_SESSION['isLogin'])) {
     <link rel="stylesheet" id="primaryColor" href="assets/css/blue-color.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
     <link rel="stylesheet" id="rtlStyle" href="#">
     <style>
-        .preloader {
-            background-color: #0e0e0e;
-            /* background-color:#0e0e0ed4; */
-            height: 100%;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 99999
-        }
-
-        .preloader .preloader-block {
-            -webkit-transform: translate(50%, 50%);
-            bottom: 50%;
-            position: fixed;
-            right: 50%;
-            transform: translate(50%, 50%);
-            z-index: 3000
-        }
-
-        .preloader .preloader-block .preloader-icon .loading-dot {
-            background-color: #fff;
-            border-radius: 50%;
-            display: inline-block;
-            height: 13px;
-            width: 13px
-        }
-
-        .preloader .preloader-block .preloader-icon .loading-dot.loading-dot-1 {
-            -webkit-animation: 1.2s grow ease-in-out infinite;
-            animation: 1.2s grow ease-in-out infinite
-        }
-
-        .preloader .preloader-block .preloader-icon .loading-dot.loading-dot-2 {
-            -webkit-animation: 1.2s grow ease-in-out infinite .15555s;
-            animation: 1.2s grow ease-in-out infinite .15555s;
-            margin: 0 14px
-        }
-
-        .preloader .preloader-block .preloader-icon .loading-dot.loading-dot-3 {
-            -webkit-animation: 1.2s grow ease-in-out infinite .3s;
-            animation: 1.2s grow ease-in-out infinite .3s
-        }
-
-        @-webkit-keyframes grow {
-
-            0%,
-            100%,
-            40% {
-                -webkit-transform: scale(0);
-                transform: scale(0)
-            }
-
-            40% {
-                -webkit-transform: scale(1);
-                transform: scale(1)
-            }
-        }
-
-        @keyframes grow {
-
-            0%,
-            100%,
-            40% {
-                -webkit-transform: scale(0);
-                transform: scale(0)
-            }
-
-            40% {
-                -webkit-transform: scale(1);
-                transform: scale(1)
-            }
-        }
-
-        .rotate-180 {
-            transform: rotate(180deg);
+        .main-menu{
+            border-right: 1px solid #dce1df !important;
         }
     </style>
 </head>
@@ -211,7 +139,7 @@ if (empty($_SESSION['isLogin'])) {
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="show-all-btn">Show all message</a>
+                                            <a href="message.php" class="show-all-btn">Show all message</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -282,7 +210,7 @@ if (empty($_SESSION['isLogin'])) {
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="show-all-btn">Show all message</a>
+                                            <a href="message.php" class="show-all-btn">Show all message</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -333,11 +261,13 @@ if (empty($_SESSION['isLogin'])) {
                                     </div>
                                 </div>
                                 <button class="header-btn fullscreen-btn" id="btnFullscreen"><i class="fa-solid fa-expand"></i></button>
+                                <button class="header-btn fullscreen-btn" id="darkTheme"> <i id="themeIcon" class="fa-solid fa-moon"></i></button>
+                                <button class="header-btn fullscreen-btn d-none" id="lightTheme"> <i id="themeIcon" class="fa-solid fa-sun"></i></button>
                             </div>
                         </div>
                     </div>
                     <button class="header-btn header-collapse-group-btn d-lg-none"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    <button class="header-btn theme-settings-btn d-lg-none"><i class="fa-solid fa-gear"></i></button>
+                    <!-- <button class="header-btn theme-settings-btn d-lg-none"><i class="fa-solid fa-gear"></i></button> -->
                     <div class="header-btn-box profile-btn-box">
                         <button class="profile-btn" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="assets/images/admin.png" alt="image">
@@ -355,15 +285,15 @@ if (empty($_SESSION['isLogin'])) {
                                     </div>
                                 </div>
                             </li>
-                            <li><a class="dropdown-item" href="view-profile.html"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a></li>
-                            <li><a class="dropdown-item" href="chat.html"><span class="dropdown-icon"><i class="fa-solid fa-envelope"></i></span> Message</a></li>
-                            <li><a class="dropdown-item" href="task.html"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li>
+                            <li><a class="dropdown-item" href="profile.php"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a></li>
+                            <li><a class="dropdown-item" href="message.php"><span class="dropdown-icon"><i class="fa-solid fa-envelope"></i></span> Message</a></li>
+                            <li><a class="dropdown-item" href="task.php"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li>
                             <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> Help</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="edit-profile.html"><span class="dropdown-icon"><i class="fa-solid fa-gear"></i></span> Settings</a></li>
-                            <li><a class="dropdown-item" id="logOut" href="#"><span class="dropdown-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span> Logout</a></li>
+                            <li><a class="dropdown-item logOut" href="#"><span class="dropdown-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span> Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -374,13 +304,13 @@ if (empty($_SESSION['isLogin'])) {
 
     <!-- profile right sidebar start -->
     <div class="profile-right-sidebar">
-        <button class="right-bar-close"><i class="fa-light fa-angle-right"></i></button>
+        <button class="right-bar-close pt-0"><i class="fa-solid fa-chevron-right fs-5"></i></button>
         <div class="top-panel">
             <div class="profile-content scrollable">
                 <ul>
                     <li>
                         <div class="dropdown-txt text-center">
-                            <p class="mb-0">Shaikh Abu Dardah</p>
+                            <p class="mb-0 text-uppercase">RITIK KUMAR</p>
                             <span class="d-block">Web Developer</span>
                             <div class="d-flex justify-content-center">
                                 <div class="form-check pt-3">
@@ -391,13 +321,13 @@ if (empty($_SESSION['isLogin'])) {
                         </div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="view-profile.html"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a>
+                        <a class="dropdown-item" href="profile.php"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="chat.html"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a>
+                        <a class="dropdown-item" href="message.php"><span class="dropdown-icon"><i class="fa-solid fa-envelope"></i></span> Message</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="task.html"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a>
+                        <a class="dropdown-item" href="task.php"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> Help</a>
@@ -407,20 +337,19 @@ if (empty($_SESSION['isLogin'])) {
         </div>
         <div class="bottom-panel">
             <div class="button-group">
-                <a href="edit-profile.html"><i class="fa-light fa-gear"></i><span>Settings</span></a>
-                <a href="login.html"><i class="fa-light fa-power-off"></i><span>Logout</span></a>
+                <a href="edit-profile.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+                <a class="dropdown-item logOut" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a>
             </div>
         </div>
     </div>
     <!-- profile right sidebar end -->
 
-    <div class="right-sidebar-btn d-lg-block d-none">
+    <!-- <div class="right-sidebar-btn d-lg-block d-none">
         <button class="header-btn theme-settings-btn btn-primary"><i class="fa-solid fa-gear"></i></button>
-    </div>
-
+    </div> -->
     <!-- right sidebar start -->
-    <div class="right-sidebar">
-        <button class="right-bar-close"><i class="fa-solid fa-chevron-right"></i></button>
+    <!-- <div class="right-sidebar">
+        <button class="right-bar-close pt-0"><i class="fa-solid fa-chevron-right fs-5"></i></button>
         <div class="sidebar-title">
             <h3>Layout Settings</h3>
         </div>
@@ -745,7 +674,7 @@ if (empty($_SESSION['isLogin'])) {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- right sidebar end -->
 
     <!-- main sidebar start -->
@@ -756,10 +685,10 @@ if (empty($_SESSION['isLogin'])) {
                     <a role="button" class="sidebar-link-group-title has-sub">Dashboard</a>
                     <ul class="sidebar-link-group">
                         <li class="sidebar-dropdown-item">
-                            <a href="dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-table"></i></span> <span class="sidebar-txt">Tabular Dashboard</span></a>
+                            <a href="tabular-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-table"></i></span> <span class="sidebar-txt">Tabular Dashboard</span></a>
                         </li>
                         <li class="sidebar-dropdown-item">
-                            <a href="graphical_dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-chart-area"></i></span> <span class="sidebar-txt">Graphical Dashboard</span></a>
+                            <a href="graphical-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-chart-area"></i></span> <span class="sidebar-txt">Graphical Dashboard</span></a>
                         </li>
                     </ul>
                 </li>

@@ -235,7 +235,7 @@ $(document).ready(function () {
                         $.each(response.data, function(index, item) {
                             html += `<div class="col-12 col-sm-8 col-lg-4 your_blog">
                                         <div class="card single-post single_blog" data-id="${item.id}"><a class="post-img" href="#">
-                                            <img class="card-img-top" src="img/${item.card_image}" alt="Blog post">
+                                            <img class="card-img-top" src="blog_img/${item.card_image}" alt="Blog post">
                                             <span class="content-date">${formatDate(item.created_at)}</span></a>
                                             <div class="card-body post-content">
                                                 <a href="#"><h5 class="card-title content-title">${item.title}</h5></a>
@@ -285,7 +285,7 @@ $(document).ready(function () {
                     if (response.data.length > 0) {
                         let item = response.data[0];
                         html += `<div class="card single-post" style="background-color: transparent;"><a class="post-img" href="#">
-                                    <img class="card-img-top" src="img/${item.card_image}" alt="Blog post">
+                                    <img class="card-img-top" src="blog_img/${item.card_image}" alt="Blog post">
                                     <span class="" style="display: flex; justify-content: end; font-weight: 700;">${formatDate(item.created_at)}</span></a>
                                     <div class="card-body post-content pl-0 pr-0">
                                         <a href="#"><h5 class="card-title content-title">${item.title}</h5></a>
