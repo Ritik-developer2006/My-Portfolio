@@ -15,7 +15,6 @@
 <script src="assets/js/moment.min.js"></script>
 <script src="assets/js/daterangepicker.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/dashboard.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- for demo purpose -->
@@ -32,6 +31,8 @@
         "showEasing": "swing",
         "hideEasing": "linear"
     };
+
+    // toastr.success("Welcome to Digiboard Admin Panel!");
 
     var rtlReady = $('html').attr('dir', 'ltr');
     if (rtlReady !== undefined) {
@@ -60,8 +61,10 @@
                 console.log(response);
                 let status = response.status;
                 if (status == 1) {
-                    alert("LogOut successfully!");
-                    window.location.href = "index.php";
+                    toastr.success("Logout successfully!");
+                    setTimeout(() => {
+                        window.location.href = "index.php";
+                    }, 500);
                 } else {
                     alert("Something went wrong!");
                 }
@@ -103,6 +106,7 @@
         };
     });
 </script>
+
 </body>
 
 </html>

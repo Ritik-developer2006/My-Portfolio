@@ -129,6 +129,10 @@
             padding: 12px 12px 12px 50px;
             width: 20em;
         }
+	.footer {
+    margin-left: 10px;
+    margin-right: 10px;
+}
     }
 
 .filepond--credits {
@@ -182,7 +186,7 @@
 
 .image-preview-container {
         width: 120px;
-        height: 75px;
+        height: 80px;
         background: #1f1f1f;
         border-radius: 10px;
         position: relative;
@@ -194,3 +198,128 @@
         height: 100%;
         object-fit: contain;
     }
+
+/* ============================
+   TOASTR – DASHBOARD THEME
+   ============================ */
+
+/* Toast container (always on top) */
+#toast-container {
+    z-index: 99999999 !important;
+}
+
+/* Base toast */
+#toast-container > div {
+    position: relative;
+    border-radius: 8px;
+    padding: 14px 18px 14px 50px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #ffffff;
+    opacity: 1 !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    background-clip: padding-box;
+}
+
+/* Toast title */
+.toast-title {
+    font-weight: 600;
+}
+
+/* Toast message */
+.toast-message {
+    word-wrap: break-word;
+}
+
+/* ============================
+   TOAST TYPES
+   ============================ */
+
+/* Success */
+.toast-success {
+    background-color: #16a34a !important;
+    border-left: 5px solid #0f5132;
+}
+
+/* Error */
+.toast-error {
+    background-color: #dc2626 !important;
+    border-left: 5px solid #7f1d1d;
+}
+
+/* Info */
+.toast-info {
+    background-color: #2563eb !important;
+    border-left: 5px solid #1e3a8a;
+}
+
+/* Warning */
+.toast-warning {
+    background-color: #d97706 !important;
+    border-left: 5px solid #78350f;
+}
+
+/* ============================
+   PROGRESS BAR
+   ============================ */
+
+.toast-progress {
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================
+   CLOSE BUTTON
+   ============================ */
+
+.toast-close-button {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 18px;
+    color: #ffffff !important;
+    opacity: 0.7;
+}
+
+.toast-close-button:hover {
+    opacity: 1;
+}
+
+/* ============================
+   POSITION FIX (HEADER SAFE)
+   ============================ */
+
+.toast-top-right {
+    top: 8px !important; /* below header */
+    right: 8px;
+}
+
+/* ============================
+   MOBILE OPTIMIZATION
+   ============================ */
+
+@media (max-width: 480px) {
+
+    #toast-container > div {
+        width: 92vw;
+        margin: 0 auto 10px auto;
+        padding: 12px 14px 12px 46px;
+        font-size: 13px;
+        border-radius: 12px;
+    }
+
+    .toast-top-right {
+        right: 48%;
+        transform: translateX(50%);
+        top: 5px !important;
+    }
+}
+
+@media (min-width: 241px) and (max-width: 480px) {
+    #toast-container .toast-close-button {
+        right: 0.4em;
+        top: 0.2em;
+    }
+}

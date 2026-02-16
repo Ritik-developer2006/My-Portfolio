@@ -55,7 +55,7 @@ function getCategories() {
                 let html = "";
                 if (response.data.length > 0) {
                     $.each(response.data, function (index, item) {
-                        html += `<div class="card">
+                        html += `<div class="card flex-fill">
                                         <div class="card-header d-flex justify-content-between">
                                             <div>${item.name}</div>
                                             <div>
@@ -209,7 +209,7 @@ $("body").on("submit", ".update_category", function (e) {
     });
 });
 
-function getAllCategories(selectElement, selectedId) {
+function getAllCategories(selectElement, selectedId = null) {
     $.ajax({
         type: 'POST',
         url: '/API/adminApi.php',
@@ -290,9 +290,9 @@ function getAllProjects() {
                                                         </div>
 
                                                         <div class="col-lg-6 d-flex gap-4 mt-3">
-                                                            <div>
+                                                            <div class="flex-fill">
                                                                 <label for="icon${item.id}" class="form-label mb-2">Project Image</label>
-                                                                <div class="image-preview-container">
+                                                                <div class="image-preview-container w-100">
                                                                     <img src="../img/${item.images}" class="image-preview">
                                                                 </div>
                                                             </div>
@@ -453,4 +453,23 @@ $("body").on("submit", ".update_project", function (e) {
             toastr.error("Internal sever error");
         }
     });
+});
+
+$("body").on("click", "#add_category", function () {
+    $("#add_category_modal").modal("show");
+});
+
+$("body").on("click", "#add_project", function () {
+    $("#add_project_modal").modal("show");
+    let Box = $("#data_filter_id");
+    getAllCategories(Box, null);
+    initSelect2();
+});
+
+$("body").on("click", ".close_project_modal", function () {
+    $("#add_project_modal").modal("hide");
+});
+
+$("body").on("click", ".close_category_modal", function () {
+    $("#add_category_modal").modal("hide");
 });

@@ -4,6 +4,7 @@ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 header('Content-Type: application/json; charset=utf-8');
 
 include_once('../connection/mysqlconnection.php');
+include_once('sendEmailApi.php');
 
 // If POST is empty, try to read JSON and map it to $_POST
 if (empty($_POST)) {
@@ -154,7 +155,7 @@ class AdminApi
     public function getAllTestimonials()
     {
         $smslink = $this->connect_to_mysqlsms();
-        $stmt = $smslink->prepare("SELECT * FROM tbl_testimonials");
+        $stmt = $smslink->prepare("SELECT * FROM tbl_testimonials order by id DESC");
 
         if (!$stmt->execute()) {
             echo json_encode([
@@ -340,7 +341,7 @@ class AdminApi
     public function getUserMessages()
     {
         $smslink = $this->connect_to_mysqlsms();
-        $stmt = $smslink->prepare("SELECT * FROM user_message");
+        $stmt = $smslink->prepare("SELECT * FROM user_message ORDER BY id DESC");
 
         if (!$stmt->execute()) {
             echo json_encode([
@@ -738,6 +739,40 @@ class AdminApi
         die;
     }
 
+    public function getAllCounts()
+    {
+        $smslink = $this->connect_to_mysqlsms();
+        $stmt = $smslink->prepare("SELECT
+                                    (SELECT COUNT(*) FROM user_message) AS total_messages,
+                                    (SELECT COUNT(*) FROM tbl_blogs) AS total_blogs,
+                                    (SELECT COUNT(*) FROM tbl_project) AS total_projects,
+                                    (SELECT COUNT(*) FROM tbl_testimonials) AS total_feedbacks");
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        $result = $stmt->get_result();
+        $data = [];
+        // print_r($result);
+        // die;
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        echo json_encode([
+            'status' => 1,
+            'msg' => 'All counts fetched successfully',
+            'data' => $data
+        ]);
+        die;
+    }
+
     // Fetch Logo & Background image from front page Detail records
     public function getLogoBck()
     {
@@ -819,6 +854,241 @@ class AdminApi
         echo json_encode([
             'status' => 0,
             'msg' => 'Incorrect Username or Password'
+        ]);
+        die;
+    }
+
+    public function forgotPassword($email)
+    {
+        $smslink = $this->connect_to_mysqlsms();
+
+        $stmt = $smslink->prepare(
+            "SELECT id, username, password FROM tbl_admin WHERE email = ? LIMIT 1"
+        );
+
+        $stmt->bind_param("s", $email);
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        $result = $stmt->get_result();
+        // print_r($result);
+        // die;
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+
+            // Verify hashed password
+            // if (password_verify($password, $row['password'])) {
+
+            // Verify real password
+            if (!empty($row)) {
+
+                $otp = rand(1000, 9999);
+                $id = $row['id'];
+                
+                $stmt = $smslink->prepare("UPDATE tbl_admin SET otp = ? WHERE id = ?");
+                $stmt->bind_param("si", $otp, $id);
+
+                if (!$stmt->execute()) {
+                    echo json_encode([
+                        'status' => 0,
+                        'msg' => 'Query execution failed'
+                    ]);
+                    die;
+                }
+
+                $response = sendEmail($row['username'], $email, 'rk5771829@gmail.com', 'OTP Verification', "Your forgot password OTP is : $otp", null, null);
+
+                if (!$response) {
+                    echo json_encode([
+                        'status' => 0,
+                        'msg' => 'Failed to send email'
+                    ]);
+                    die;
+                }
+                
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+
+                $_SESSION['admin_id'] = $id;
+                $_SESSION['forgot_password'] = true;
+                $_SESSION['forgot_password_time'] = time();
+
+                echo json_encode([
+                    'status' => 1,
+                    'msg' => 'Otp send successfully.'
+                ]);
+                die;
+            }
+        }
+
+        echo json_encode([
+            'status' => 0,
+            'msg' => 'Incorrect Username or Password'
+        ]);
+        die;
+    }
+
+    public function verifyOtp($otp)
+    {   
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id = $_SESSION['admin_id'];
+        $smslink = $this->connect_to_mysqlsms();
+        
+        $stmt = $smslink->prepare(
+            "SELECT id, username, password FROM tbl_admin WHERE id = ? and otp = ? LIMIT 1"
+        );
+
+        $stmt->bind_param("ss", $id, $otp);
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        $result = $stmt->get_result();
+        // print_r($result);
+        // die;
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+
+            // Verify hashed password
+            // if (password_verify($password, $row['password'])) {
+
+            // Verify real password
+            if (!empty($row)) {
+
+                $otp = "";
+                $id = $row['id'];
+                
+                $stmt = $smslink->prepare("UPDATE tbl_admin SET otp = ? WHERE id = ?");
+                $stmt->bind_param("si", $otp, $id);
+
+                if (!$stmt->execute()) {
+                    echo json_encode([
+                        'status' => 0,
+                        'msg' => 'Query execution failed'
+                    ]);
+                    die;
+                }
+                
+                // set reset password session
+                $_SESSION['reset_password'] = true;
+                $_SESSION['reset_password_time'] = time();
+
+                // unset forgot password session
+                unset($_SESSION['forgot_password']);
+                unset($_SESSION['forgot_password_time']);
+
+                echo json_encode([
+                    'status' => 1,
+                    'msg' => 'Otp verified successfully.'
+                ]);
+                die;
+            }
+        }
+
+        echo json_encode([
+            'status' => 0,
+            'msg' => 'Incorrect OTP'
+        ]);
+        die;
+    }
+
+    public function resetPassword($password, $confirm_password)
+    {   
+        // check password and confirm password match
+        if ($password !== $confirm_password) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Password and Confirm Password do not match!'
+            ]);
+            die;
+        }
+
+        // check password length
+        if (strlen($password) < 6) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Password too short, try again!'
+            ]);
+            die;
+        }
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $id = $_SESSION['admin_id'];
+        $smslink = $this->connect_to_mysqlsms();
+        
+        $stmt = $smslink->prepare(
+            "SELECT id, username, password FROM tbl_admin WHERE id = ? and password = ? LIMIT 1"
+        );
+
+        $stmt->bind_param("ss", $id, $password);
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        $result = $stmt->get_result();
+        // print_r($result);
+        // die;
+
+        if ($result->num_rows == 1) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Password should be different from old password!'
+            ]);
+            die;
+        } else {
+            $row = $result->fetch_assoc();
+            // Verify hashed password
+            // if (password_verify($password, $row['password'])) {
+
+            // Verify real password
+            if (empty($row)) {
+                
+                $stmt = $smslink->prepare("UPDATE tbl_admin SET password = ? WHERE id = ?");
+                $stmt->bind_param("si", $confirm_password, $id);
+
+                if (!$stmt->execute()) {
+                    echo json_encode([
+                        'status' => 0,
+                        'msg' => 'Query execution failed'
+                    ]);
+                    die;
+                }
+                
+                // unset all remaining session
+                session_destroy();
+
+                echo json_encode([
+                    'status' => 1,
+                    'msg' => 'Password reset successfully.'
+                ]);
+                die;
+            }
+        }
+
+        echo json_encode([
+            'status' => 0,
+            'msg' => 'Incorrect OTP'
         ]);
         die;
     }
@@ -2000,6 +2270,63 @@ class AdminApi
         die;
     }
 
+    // insert menu records
+    public function addMenu()
+    {
+        // print_r($_POST);
+        // die;
+        $smslink = $this->connect_to_mysqlsms();
+
+        $menu_name = $_POST['menu_name'];
+        $menu_link = $_POST['menu_link'];
+
+        // Update Testimonial record
+        $stmt = $smslink->prepare("INSERT INTO tbl_menu SET name = ?, link = ?");
+        $stmt->bind_param("ss", $menu_name, $menu_link);
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        echo json_encode([
+            'status' => 1,
+            'msg' => 'Menu added successfully'
+        ]);
+        die;
+    }
+
+    // insert slider records
+    public function addSlider()
+    {
+        // print_r($_POST);
+        // die;
+        $smslink = $this->connect_to_mysqlsms();
+
+        $slider_name = $_POST['slider_name'];
+
+        // Update Testimonial record
+        $stmt = $smslink->prepare("INSERT INTO tbl_sliders_name SET name = ?");
+        $stmt->bind_param("s", $slider_name);
+
+        if (!$stmt->execute()) {
+            echo json_encode([
+                'status' => 0,
+                'msg' => 'Query execution failed'
+            ]);
+            die;
+        }
+
+        echo json_encode([
+            'status' => 1,
+            'msg' => 'Slider added successfully'
+        ]);
+        die;
+    }
+
     // LogOut admin
     public function logOut()
     {
@@ -2107,6 +2434,26 @@ switch ($method) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $user_obj->logIn($username, $password);
+        break;
+    
+    case 'forgotPassword':
+        $email = $_POST['email'];
+        $user_obj->forgotPassword($email);
+        break;
+    
+    case 'verifyOtp':
+        $otp1 = $_POST['otp1'];
+        $otp2 = $_POST['otp2'];
+        $otp3 = $_POST['otp3'];
+        $otp4 = $_POST['otp4'];
+        $otp = $otp1 . $otp2 . $otp3 . $otp4;
+        $user_obj->verifyOtp($otp);
+        break;
+
+    case 'resetPassword':
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
+        $user_obj->resetPassword($password, $confirm_password);
         break;
 
     case 'logOut':
@@ -2249,6 +2596,19 @@ switch ($method) {
     case 'updateContactDetail':
         $user_obj->updateContactDetail();
         break;
+    
+    case 'getAllCounts':
+        $user_obj->getAllCounts();
+        break;
+    
+    case 'addSlider':
+        $user_obj->addSlider();
+        break;
+    
+    case 'addMenu':
+        $user_obj->addMenu();
+        break;
+
     default:
         echo json_encode([
             'status' => 0,

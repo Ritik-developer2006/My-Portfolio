@@ -47,7 +47,7 @@ function getAllMenu() {
                 let html = "";
                 if (response.data.length > 0) {
                     $.each(response.data, function (index, item) {
-                        html += `<div class="card">
+                        html += `<div class="card flex-fill">
                                         <div class="card-header d-flex justify-content-between">
                                             <div>${item.name}</div>
                                             <div>
@@ -151,6 +151,7 @@ $("body").on("click", "#delete_now", function () {
         },
         success: function (response) {
             if (response.status == 1) {
+                $("#delete_menu").modal("hide");
                 toastr.success("Menu delete successfully!");
                 getAllMenu();
             } else {
@@ -159,6 +160,7 @@ $("body").on("click", "#delete_now", function () {
         },
         complete: function () {
             $(".preloader, .preloader-icon").hide();
+            $("#delete_menu").modal("hide");
         },
         error: function () {
             toastr.error("Internal sever error");
@@ -224,7 +226,7 @@ function getAllSlider() {
                 let html = "";
                 if (response.data.length > 0) {
                     $.each(response.data, function (index, item) {
-                        html += `<div class="card">
+                        html += `<div class="card flex-fill">
                                         <div class="card-header d-flex justify-content-between">
                                             <div>${item.name}</div>
                                             <div>
@@ -246,7 +248,6 @@ function getAllSlider() {
                                                             <input type="text" readonly required name='name' value="${item.name}" class="form-control ps-2" id="name${item.id}" placeholder="Slider name">
                                                         </div>
                                                     </div>
-
                                                     <div class="col-sm-12 d-none submit_btn">
                                                         <button class="btn btn-sm btn-primary" type="submit">Update</button>
                                                     </div>
@@ -329,12 +330,14 @@ $("body").on("click", "#delete_slider_now", function () {
         success: function (response) {
             if (response.status == 1) {
                 toastr.success("Slider delete successfully!");
+                $("#delete_slider").modal("hide");
                 getAllSlider();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }
         },
         complete: function () {
+            $("#delete_slider").modal("hide");
             $(".preloader, .preloader-icon").hide();
         },
         error: function () {
@@ -594,6 +597,92 @@ $("body").on("submit", ".update_bck", function (e) {
             if (response.status == 1) {
                 toastr.success("Background image updated successfully!");
                 getLogoBck();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("click", "#add_menu", function () {
+    $("#add_menu_modal").modal("show");
+});
+
+$("body").on("click", ".close_menu_modal", function () {
+    $("#add_menu_modal").modal("hide");
+});
+
+$("body").on("click", "#add_slider", function () {
+    $("#add_slider_modal").modal("show");
+});
+
+$("body").on("click", ".close_slider_modal", function () {
+    $("#add_slider_modal").modal("hide");
+});
+
+$("body").on("submit", "#add_slider_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addSlider");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Slider added successfully!");
+                $("#add_slider_modal").modal("hide");
+                getAllSlider();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("submit", "#add_menu_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addMenu");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Menu added successfully!");
+                $("#add_menu_modal").modal("hide");
+                getAllMenu();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }

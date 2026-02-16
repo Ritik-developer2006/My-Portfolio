@@ -18,7 +18,7 @@ require_once("header.php");
                     <div>
                         <h5 class="fw-bold">Menus</h5>
                     </div>
-                    <div><i class="fa-solid fa-circle-plus" id="add_education" style="cursor: pointer"></i></div>
+                    <div><i class="fa-solid fa-circle-plus" id="add_menu" style="cursor: pointer"></i></div>
                 </div>
                 <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="menu_container" style="min-height: auto;">
                     <!-- data come through ajax -->
@@ -40,7 +40,7 @@ require_once("header.php");
                     <div>
                         <h5 class="fw-bold">All Sliders Name</h5>
                     </div>
-                    <div><i class="fa-solid fa-circle-plus"></i></div>
+                    <div><i class="fa-solid fa-circle-plus" id="add_slider" style="cursor: pointer;"></i></div>
                 </div>
                 <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="slider_container" style="min-height: auto;">
                     <!-- data come through ajax -->
@@ -62,7 +62,7 @@ require_once("header.php");
                     <div>
                         <h5 class="fw-bold">Logo & Background Image</h5>
                     </div>
-                    <div><i class="fa-solid fa-circle-plus"></i></div>
+                    <!-- <div><i class="fa-solid fa-circle-plus"></i></div> -->
                 </div>
                 <div class="panel-body d-flex justify-content-center align-items-center gap-3 flex-wrap" id="utility_container" style="min-height: auto;">
                     <!-- data come through ajax -->
@@ -115,6 +115,75 @@ require_once("header.php");
                     <button type="button" class="btn btn-sm btn-secondary close_slider_modal" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-sm btn-danger" id="delete_slider_now">Delete</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_menu_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <form id="add_menu_form" method="post" enctype="multipart/form-data" action="#">
+                    <div class="modal-header p-2">
+                        <h3 class="modal-title fs-6" id="staticBackdropLabel">Add Menu</h3>
+                        <button type="button" class="btn-close m-0 close_menu_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                    </div>
+                    <div class="modal-body" style="font-size: small;">
+                        <div class="row g-3">
+                            <div class="col-sm-12 mt-3">
+                                <label for="menu_name" class="form-label mb-2">Menu Name</label>
+                                <div class="input-group-with-icon">
+                                    <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </span>
+                                    <input type="text" required name='menu_name' value="" class="form-control ps-2" id="menu_name" placeholder="Menu name">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mt-3">
+                                <label for="menu_link" class="form-label mb-2">Menu link</label>
+                                <div class="input-group-with-icon">
+                                    <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </span>
+                                    <input type="text" required name='menu_link' value="" class="form-control ps-2" id="menu_link" placeholder="Menu link">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer p-2 border-top">
+                        <button type="button" class="btn btn-sm btn-secondary close_menu_modal" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="add_menu_now">Add Menu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_slider_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal modal-dialog-centered">
+            <div class="modal-content">
+                <form id="add_slider_form" method="post" enctype="multipart/form-data" action="#">
+                    <div class="modal-header p-2">
+                        <h3 class="modal-title fs-6" id="staticBackdropLabel">Add Slider</h3>
+                        <button type="button" class="btn-close m-0 close_slider_modal" data-bs-dismiss="modal" aria-label="Close" style="font-size: 12px !important;"></button>
+                    </div>
+                    <div class="modal-body" style="font-size: small;">
+                        <div class="row g-3">
+                            <div class="col-sm-12 mt-3">
+                                <label for="slider_name" class="form-label mb-2">Slider Name</label>
+                                <div class="input-group-with-icon">
+                                    <span class="input-icon" style="border-right: 1px solid #e5e5e5;">
+                                        <i class="fa-solid fa-pen-nib"></i>
+                                    </span>
+                                    <input type="text" required name='slider_name' value="" class="form-control ps-2" id="slider_name" placeholder="Slider name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer p-2 border-top">
+                        <button type="button" class="btn btn-sm btn-secondary close_slider_modal" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="add_slider_now">Add Slider</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

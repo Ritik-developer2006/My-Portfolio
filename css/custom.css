@@ -1,0 +1,132 @@
+canvas {
+            position: fixed !important;
+            inset: 0;
+            z-index: 0 !important;
+        }
+
+        body::before {
+            z-index: 1;
+        }
+
+        .content-description {
+            margin-bottom: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Image cropper css start */
+        #cropOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            z-index: 9999999;
+            touch-action: none; /* fixes mobile dragging */
+        }
+
+        #cropHeader,
+        #cropFooter {
+            height: 50px;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+
+        #cropBody {
+            height: calc(100% - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        #closeCrop {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
+        /* Image cropper css end */
+
+        /* .home-area{
+            z-index: 5 !important;
+        } */
+
+/* Toast container */
+/* #toast-container>div {
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+} */
+
+#toast-container{
+    z-index: 9999999;
+}
+
+/* Success */
+.toast-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: 1px solid #16a34a;
+    filter: drop-shadow(0px 0px 0px #16a34a);
+}
+
+/* Error */
+.toast-error {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border: 1px solid #b91c1c;
+    filter: drop-shadow(0px 0px 0px #b91c1c);
+}
+
+/* Info */
+.toast-info {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: 1px solid #1d4ed8;
+    filter: drop-shadow(0px 0px 0px #1d4ed8);
+}
+
+/* Warning */
+.toast-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: 1px solid #d97706;
+    filter: drop-shadow(0px 0px 0px #d97706);
+}
+
+/* Progress bar */
+.toast-progress {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Close button */
+.toast-close-button {
+    color: #fff !important;
+    opacity: 0.8;
+}
+
+.toast-close-button:hover {
+    opacity: 1;
+}
+
+@media (min-width: 241px) and (max-width: 480px) {
+    #toast-container>div {
+        padding: 10px 10px 10px 47px;
+        width: 20em;
+    }
+}

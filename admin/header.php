@@ -682,13 +682,13 @@ if (empty($_SESSION['isLogin'])) {
         <div class="main-menu">
             <ul class="sidebar-menu scrollable">
                 <li class="sidebar-item open">
-                    <a role="button" class="sidebar-link-group-title has-sub">Dashboard</a>
+                    <a role="button" class="sidebar-link-group-title has-sub btn-primary">Dashboard</a>
                     <ul class="sidebar-link-group">
                         <li class="sidebar-dropdown-item">
-                            <a href="tabular-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-table"></i></span> <span class="sidebar-txt">Tabular Dashboard</span></a>
+                            <a href="graphical-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-chart-area"></i></span> <span class="sidebar-txt">Graphical Dashboard</span></a>
                         </li>
                         <li class="sidebar-dropdown-item">
-                            <a href="graphical-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-chart-area"></i></span> <span class="sidebar-txt">Graphical Dashboard</span></a>
+                            <a href="tabular-dashboard.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-table"></i></span> <span class="sidebar-txt">Tabular Dashboard</span></a>
                         </li>
                     </ul>
                 </li>
@@ -753,7 +753,7 @@ if (empty($_SESSION['isLogin'])) {
                 </li> -->
 
                 <li class="sidebar-item">
-                    <a role="button" class="sidebar-link-group-title has-sub">Pages</a>
+                    <a role="button" class="sidebar-link-group-title has-sub btn-primary">Pages</a>
                     <ul class="sidebar-link-group">
                         <li class="sidebar-dropdown-item">
                             <a href="frontpage.php" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-layer-group"></i></span> <span class="sidebar-txt">Front Page</span></a>

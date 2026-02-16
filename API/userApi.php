@@ -6,6 +6,7 @@ header('content-type:application/json;charset=utf-8');
 require_once __DIR__ . '/websocketNotify.php';
 include_once('../connection/mysqlconnection.php');
 include_once('sendEmailApi.php');
+
 // $mthod = (isset($_POST['method']) && $_POST['method'] != '') ? $_POST['method'] : '';
 
 // If POST is empty, try to read JSON and map it to $_POST
@@ -70,9 +71,9 @@ class UserApi
 
             // Call websocket
             sendWebSocket([
-                'type' => 'new_mail',
-                'name' => $full_name,
-                'email' => $email,
+                "type" => "new_mail",
+                "name" => $full_name,
+                "email" => $email
             ]);
         } else {
             mysqli_rollback($smslink);
@@ -128,9 +129,9 @@ class UserApi
 
             // Call websocket
             sendWebSocket([
-                'type' => 'new_feedback',
-                'name' => $full_name,
-                'email' => $email,
+                "type" => "new_feedback",
+                "name" => $full_name,
+                "email" => $email
             ]);
         } else {
             mysqli_rollback($smslink);

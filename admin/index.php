@@ -2,7 +2,7 @@
 session_start();
 
 if (!empty($_SESSION['isLogin'])) {
-    header("Location: dashboard.php");
+    header("Location: graphical-dashboard.php");
     exit;
 }
 ?>
@@ -36,10 +36,9 @@ if (!empty($_SESSION['isLogin'])) {
     <!-- preloader end -->
     <div class="m-auto">
         <div class="login-box">
-            <h5 class="mb-4">ADMIN LOGIN</h5>
-            <!-- <h4>Fill Required Details</h4> -->
-
-            <form action="#" id="logIn" method="POST" enctype="multipart/form-data">
+            <h5 class="mb-2">ADMIN LOGIN</h5>
+            <h6 class="mb-3">Fill Required Details</h6>
+            <form action="#" id="logIn" method="POST">
                 <input type="text" class="input-glass" placeholder="Username" name="username" required>
 
                 <div class="password-wrap">
@@ -51,7 +50,7 @@ if (!empty($_SESSION['isLogin'])) {
 
                 <div class="options">
                     <label class="d-none d-sm-block"><input type="checkbox" name="remember">Remember Me</label>
-                    <a href="#">Forgot Password?</a>
+                    <a href="forgot-password.php" class="text-decoration-underline">Forgot Password?</a>
                 </div>
             </form>
 
@@ -60,6 +59,9 @@ if (!empty($_SESSION['isLogin'])) {
             <div class="social-buttons d-sm-flex flex-column flex-sm-row">
                 <button><i class="fab fa-facebook me-2"></i>Facebook</button>
                 <button><i class="fab fa-google me-2"></i>Google</button>
+            </div>
+            <div class="options mb-0">
+                <a href="../index.php" class="text-decoration-underline m-auto">Go back to website page?</a>
             </div>
         </div>
     </div>
@@ -78,5 +80,4 @@ if (!empty($_SESSION['isLogin'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="assets/js/login.js"></script>
 </body>
-
 </html>

@@ -181,6 +181,50 @@ $("body").on("click", "#delete_now", function () {
         success: function (response) {
             if (response.status == 1) {
                 toastr.success("Education delete successfully!");
+                $("#delete_education").modal("hide");
+                getAlleducation();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("click", "#add_education", function () {
+    $("#add_education_modal").modal("show");
+});
+
+$("body").on("click", ".close_education_modal", function () {
+    $("#add_education_modal").modal("hide");
+});
+
+$("body").on("submit", "#add_education_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addEducation");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Education added successfully!");
+                $("#add_education_modal").modal("hide");
                 getAlleducation();
             } else {
                 toastr.error("Something went wrong, Try again!");
@@ -430,6 +474,14 @@ $("body").on("submit", ".update_experience", function (e) {
     });
 });
 
+$("body").on("click", ".close_experience_modal", function () {
+    $("#add_experience_modal").modal("hide");
+});
+
+$("body").on("click", "#add_experience", function () {
+    $("#add_experience_modal").modal("show");
+});
+
 getAllskills();
 
 function getAllskills() {
@@ -604,6 +656,84 @@ $("body").on("submit", ".update_skill", function (e) {
             if (response.status == 1) {
                 toastr.success("Skill updated successfully!");
                 getAllskills();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("click", "#add_skill", function () {
+    $("#add_skill_modal").modal("show");
+});
+
+$("body").on("click", ".close_skill_modal", function () {
+    $("#add_skill_modal").modal("hide");
+});
+
+$("body").on("submit", "#add_skill_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addSkill");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Skill added successfully!");
+                $("#add_skill_modal").modal("hide");
+                getAllskills();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("submit", "#add_experience_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addExperience");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Experience added successfully!");
+                $("#add_experience_modal").modal("hide");
+                getAllExperience();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }

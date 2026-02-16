@@ -65,60 +65,41 @@ $skills_data = mysqli_fetch_all($result7, MYSQLI_ASSOC);
 <!DOCTYPE html>
 <html lang="zxx">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-
 <head>
-    <!-- Required meta tags-->
     <meta charset="utf-8">
-    <!-- Title-->
     <title>Ritik Kumar | Personal Portfolio</title>
-    <!-- Description-->
     <meta name="description" content="Personal portfolio website showcasing my web development projects, technical skills, professional experience, and blogs.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <!-- Favicons-->
     <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/myLogo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/myLogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/myLogo.png">
+
     <!-- Web fonts-->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i&amp;display=swap" rel="stylesheet">
-    <!-- CSS vendors-->
     <link rel="stylesheet" href="css/bootstrap-custom.css">
     <link rel="stylesheet" href="css/ionicons.min.css">
     <link rel="stylesheet" href="css/tiny-slider.css">
     <link rel="stylesheet" href="css/lity.min.css">
     <link rel="stylesheet" href="css/simplebar.min.css">
     <link rel="stylesheet" href="css/jquery.mb.YTPlayer.min.css">
+
     <!-- Main CSS-->
     <link rel="stylesheet" href="css/main.css">
+
     <!-- CSS Color scheme-->
     <link id="color-scheme" rel="stylesheet" href="css/colors/main-darkgreen.css">
-    <!-- Custom CSS (Add your custom CSS styles to this file)-->
-    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- toastr cdn css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- removeIf(customizerDist)-->
-    <link rel="stylesheet" href="customizer/main.css">
-    <!-- endremoveIf(customizerDist)-->
-    <style>
-        canvas {
-            position: fixed !important;
-            inset: 0;
-            z-index: 0 !important;
-        }
-
-        body::before {
-            z-index: 1;
-        }
-
-        .content-description {
-            margin-bottom: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* .home-area{
-            z-index: 5 !important;
-        } */
-    </style>
+    <!-- <link rel="stylesheet" href="customizer/main.css"> -->
+    <!-- image cropper cdn css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+     <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 
 <body class="theme-dark">

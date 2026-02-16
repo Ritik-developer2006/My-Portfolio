@@ -69,6 +69,21 @@ body::before {
     transition: transform 0.3s ease;
 }
 
+.forgot-password-box {
+    position: relative;
+    width: 380px;
+    text-align: center;
+    z-index: 5;
+    margin-left: 15px;
+    padding: 30px;
+    border-radius: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s ease;
+}
+
 /* Simple hover interaction for polish */
 .login-box:hover {
     transform: translateY(-5px);
@@ -88,11 +103,45 @@ body::before {
     opacity: 0.9;
 }
 
+.forgot-password-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+}
+
+.forgot-password-box h6 {
+    letter-spacing: 2px;
+    font-weight: 600;
+    opacity: 0.95;
+    margin-bottom: 8px;
+}
+
+.forgot-password-box h4 {
+    font-weight: 300;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
 .input-glass {
     width: 100%;
     padding: 16px 20px;
     margin-bottom: 16px;
     border-radius: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    /* Reduced background for a clearer look */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Slightly stronger border */
+    color: var(--text-color);
+    outline: none;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s, border 0.3s;
+}
+
+.input-otp-glass {
+    width: 50px;
+    height: 50px;
+    padding: 16px 19px;
+    margin-bottom: 16px;
+    border-radius: 12px;
     background: rgba(255, 255, 255, 0.1);
     /* Reduced background for a clearer look */
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -227,10 +276,22 @@ body::before {
         padding: 30px;
     	margin-left: 0px !important;
     }
+
+    .forgot-password-box {
+        width: 80%;
+        padding: 30px;
+    	margin-left: 0px !important;
+    }
 	
     .input-glass {
      width: 100%;
      padding: 7px 20px;
+    }
+
+.input-otp-glass {
+        width: 40px;
+        height: 40px;
+        padding: 7px 15px;
     }
 
 .btn-signin

@@ -5,7 +5,7 @@ require_once("header.php");
 <!-- main content start -->
 <div class="main-content">
     <div class="dashboard-breadcrumb mb-25">
-        <h2>eCommerce Dashboard</h2>
+        <h2>Graphiccal Dashboard</h2>
         <div class="input-group dashboard-filter">
             <input type="text" class="form-control" name="basic" id="dashboardFilter" readonly>
             <label for="dashboardFilter" class="input-group-text"><i class="fa-light fa-calendar-days"></i></label>

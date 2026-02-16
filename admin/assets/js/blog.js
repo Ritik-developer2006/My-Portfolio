@@ -302,7 +302,7 @@ function getAllblogs() {
                                                     
                                                     <div class="col-12 col-md-6 col-lg-6 mt-3">
                                                         <label for="card_image${item.id}" class="form-label mb-2">Multiple blog image</label>
-                                                        <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex justify-content-between align-items-center gap-3">
                                                             ${multipleImgHtml}
                                                         </div>
                                                     </div>

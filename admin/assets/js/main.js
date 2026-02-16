@@ -53,7 +53,7 @@
         //------------------------------------------------------------------------------------------------------------------
         // Calculactor In Header
         //------------------------------------------------------------------------------------------------------------------
-        if($('.dgb-calc-box').length) {
+        if ($('.dgb-calc-box').length) {
             var input = document.getElementById("dgbCalcResult");
             var td = document.querySelectorAll(".dgb-calc-box td");
             var length = td.length;
@@ -168,8 +168,8 @@
         //------------------------------------------------------------------------------------------------------------------
         // Profile Shortcut As Dropdown & As Sidebar Toggle
         //------------------------------------------------------------------------------------------------------------------
-        $('#seeProfileAsSidebar').on('change', function(){
-            if($(this).is(':checked')) {
+        $('#seeProfileAsSidebar').on('change', function () {
+            if ($(this).is(':checked')) {
                 $('.profile-btn-box').find('.profile-btn').attr('id', 'profileDropdown').attr('data-bs-toggle', '');
                 $('.profile-right-sidebar').addClass('active');
                 $('body').addClass('overflow-hidden');
@@ -181,8 +181,9 @@
                 $(this).prop('checked', true);
             }
         });
-        $('#seeProfileAsDropdown').on('change', function(){
-            if($(this).is(':checked')) {
+
+        $('#seeProfileAsDropdown').on('change', function () {
+            if ($(this).is(':checked')) {
                 $('.profile-btn-box').find('.profile-btn').attr('id', '').attr('data-bs-toggle', 'dropdown');
                 $('.profile-right-sidebar').removeClass('active');
                 $('body').removeClass('overflow-hidden');
@@ -194,77 +195,101 @@
                 $(this).prop('checked', true);
             }
         });
+
         $(function () {
             $(document).on('click', '#profileDropdown', function (e) {
                 $('.profile-right-sidebar').addClass('active');
                 $('body').addClass('overflow-hidden');
                 e.stopPropagation();
             });
-            
+
             $('.profile-right-sidebar').on('click', function (e) {
                 e.stopPropagation();
             });
-        
+
             $(document).on('click', function (e) {
                 if (!$(e.target).closest('.profile-right-sidebar').length) {
                     $('.profile-right-sidebar').removeClass('active');
                     $('body').removeClass('overflow-hidden');
                 }
             });
-        });        
-
-
+        });
 
         //------------------------------------------------------------------------------------------------------------------
         // Theme Color Change From Header & Settings
         //------------------------------------------------------------------------------------------------------------------
         // ====== Enable Blue Theme From Settings ======
-        let blueMode = localStorage.getItem('blueMode');
-        const enableBlueMode = () => {
-            $('body').removeClass('light-theme dark-theme');
-            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
-            localStorage.setItem("blueMode", "enabled");
-            localStorage.removeItem("darkMode");
-        };
-        if (blueMode === "enabled") {
-            enableBlueMode();
-            localStorage.removeItem("darkTheme");
-            $('#blueTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
-        }
-        $('#blueTheme').on('click', function () {
-            enableBlueMode();
-        });
 
-        // ====== Enable Dark Theme From Settings ======
-        let darkMode = localStorage.getItem('darkMode');
-        const enableDarkMode = () => {
-            $('body').removeClass('light-theme').addClass('dark-theme');
-            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
-            localStorage.setItem("darkMode", "enabled");
-            localStorage.removeItem("blueMode");
-        };
-        if (darkMode === "enabled") {
-            enableDarkMode();
-            $('#darkTheme').addClass('active');
+        function showToggleIcon(theme) {
+            if (theme === "dark") {
+                $('#darkTheme').addClass('d-none');   // hide moon
+                $('#lightTheme').removeClass('d-none'); // show sun
+            } else {
+                $('#lightTheme').addClass('d-none'); // hide sun
+                $('#darkTheme').removeClass('d-none'); // show moon
+            }
         }
-        $('#darkTheme').on('click', function () {
-            enableDarkMode();
-        });
 
-        // ====== Enable Light Theme From Settings ======
-        let lightMode = localStorage.getItem('lightMode');
-        const enableLightMode = () => {
-            $('body').removeClass('dark-theme').addClass('light-theme');
-            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-black.png');
-            localStorage.removeItem("blueMode");
-            localStorage.removeItem("darkMode");
-        };
-        if (lightMode === "enabled") {
-            enableLightMode();
-            $('#lightTheme').addClass('active');
+        function setLight() {
+            $('body').removeClass('dark-theme blue-theme').addClass('light-theme');
+            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img')
+                .attr('src', '../img/favicons/myLogo.png');
+
+            localStorage.setItem("theme", "light");
+            // setActiveIcon('#lightTheme');
+            showToggleIcon("light");
         }
+
+        function setDark() {
+            $('body').removeClass('light-theme blue-theme').addClass('dark-theme');
+            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img')
+                .attr('src', '../img/favicons/myLogo.png');
+
+            localStorage.setItem("theme", "dark");
+            // setActiveIcon('#darkTheme');
+            showToggleIcon("dark");
+        }
+
+        function setBlue() {
+            $('body').removeClass('light-theme dark-theme').addClass('blue-theme');
+            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img')
+                .attr('src', 'assets/images/logo-big.png');
+
+            localStorage.setItem("theme", "blue");
+            // setActiveIcon('#blueTheme');
+        }
+
+        // function setActiveIcon(id) {
+        //     $('.dashboard-icon').removeClass('active');
+        //     $(id).addClass('active');
+        // }
+
+        // ===============================
+        // ON PAGE LOAD (REFRESH HANDLER)
+        // ===============================
+        let theme = localStorage.getItem("theme");
+
+        if (theme === "dark") {
+            setDark();
+        } else if (theme === "blue") {
+            setBlue();
+        } else {
+            setLight();   // Default theme
+        }
+
+        // ===============================
+        // CLICK EVENTS
+        // ===============================
         $('#lightTheme').on('click', function () {
-            enableLightMode();
+            setLight();
+        });
+
+        $('#darkTheme').on('click', function () {
+            setDark();
+        });
+
+        $('#blueTheme').on('click', function () {
+            setBlue();
         });
 
 
@@ -292,7 +317,7 @@
                 $('body').addClass('overflow-hidden');
                 e.stopPropagation()
             });
-            
+
             $('.right-sidebar').on('click', function (e) {
                 e.stopPropagation();
             });
@@ -324,11 +349,11 @@
         //------------------------------------------------------------------------------------------------------------------
         // Main Menu Position Change From Settings
         //------------------------------------------------------------------------------------------------------------------
-        $('.settings-row').each(function() {
+        $('.settings-row').each(function () {
             var $buttons = $(this).find('.dashboard-icon:not(#enableLoader):not(#disableLoader)');
             var $buttonArray = $buttons.toArray();
 
-            $buttonArray.forEach(function(button) {
+            $buttonArray.forEach(function (button) {
                 var classesToInsert = window.localStorage.getItem(button.id);
                 if (classesToInsert != null) {
                     var classesToInsertArray = classesToInsert.split(' ');
@@ -336,14 +361,14 @@
                         $(button).addClass(classesToInsertArray[i]);
                     }
                 }
-                $(button).on('click', function() {
+                $(button).on('click', function () {
                     var classesToInsert = 'active';
                     var classesToInsertArray = classesToInsert.split(' ');
                     for (let i = 0; i < classesToInsertArray.length; i++) {
                         $(button).addClass(classesToInsertArray[i]);
                     }
 
-                    $buttonArray.forEach(function(btn) {
+                    $buttonArray.forEach(function (btn) {
                         if (btn !== button) {
                             $(btn).removeClass('active');
                             window.localStorage.removeItem(btn.id);
@@ -354,12 +379,12 @@
                 });
             });
 
-            var initiallySelectedButton = $buttonArray.find(function(button) {
+            var initiallySelectedButton = $buttonArray.find(function (button) {
                 return $(button).hasClass('active');
             });
 
             if (initiallySelectedButton && !localStorage.getItem(initiallySelectedButton.id)) {
-                var activeButtons = $buttonArray.filter(function(button) {
+                var activeButtons = $buttonArray.filter(function (button) {
                     return $(button).hasClass('active');
                 });
                 if (activeButtons.length > 1) {
@@ -371,7 +396,7 @@
         let horizontalMenu = localStorage.getItem('horizontalMenu');
         const enableHorizontalMenu = () => {
             $('html').attr('data-menu', 'horizontal');
-            if($('html').attr('data-menu') === ('horizontal')) {
+            if ($('html').attr('data-menu') === ('horizontal')) {
                 $('.main-sidebar').addClass('horizontal-menu').removeClass('collapsed two-column-menu sub-menu-collapsed sidebar-hover hoverable flush-menu');
                 if ($('.sidebar-menu').overlayScrollbars()) {
                     $('.sidebar-menu').overlayScrollbars().destroy();
@@ -409,13 +434,13 @@
         let twoColumnMenu = localStorage.getItem('twoColumnMenu');
         const enableTwoColumnMenu = () => {
             $('html').attr('data-menu', 'two-column');
-            if($('html').attr('data-menu') === ('two-column')) {
+            if ($('html').attr('data-menu') === ('two-column')) {
                 $('.main-sidebar').addClass('two-column-menu collapsed').removeClass('horizontal-menu sidebar-hover hoverable flush-menu');
                 $(".scrollable").overlayScrollbars({});
                 $('.sidebar-dropdown-menu[id]').appendTo('.main-sidebar');
                 $('.sidebar-dropdown-menu[id]').hide();
                 $('.sidebar-dropdown-menu[id]').first().show();
-                if(!$('body').hasClass('has-two-column-menu')) {
+                if (!$('body').hasClass('has-two-column-menu')) {
                     $('body').removeClass('expanded has-horizontal hover-menu').addClass('body-padding has-two-column-menu');
                     $('.header').removeClass('expanded');
                 }
@@ -448,7 +473,7 @@
         let verticalMenu = localStorage.getItem('verticalMenu');
         const enableVerticalMenu = () => {
             $('html').attr('data-menu', 'vertical');
-            if($('html').attr('data-menu') === ('vertical')) {
+            if ($('html').attr('data-menu') === ('vertical')) {
                 $('.main-sidebar').removeClass('horizontal-menu two-column-menu sub-menu-collapsed collapsed flush-menu hoverable sidebar-hover');
                 $(".scrollable").overlayScrollbars({});
                 $('.sidebar-link-group-title').addClass('show');
@@ -485,7 +510,7 @@
         let flushMenu = localStorage.getItem('flushMenu');
         const enableFlushMenu = () => {
             $('html').attr('data-menu', 'flush-mwnu');
-            if($('html').attr('data-menu') === ('flush-mwnu')) {
+            if ($('html').attr('data-menu') === ('flush-mwnu')) {
                 $('.main-sidebar').addClass('flush-menu').removeClass('horizontal-menu two-column-menu sub-menu-collapsed collapsed');
                 if ($('.main-sidebar').hasClass('sidebar-hover')) {
                     $('.header').addClass('expanded');
@@ -566,7 +591,7 @@
             var styleSheet = $(this).data('color');
             $(this).addClass('active').siblings().removeClass('active');
             $('#primaryColor').attr('href', 'assets/css/' + styleSheet + '.css');
-            
+
             // Save the selected style sheet in local storage
             localStorage.setItem('selectedStyleSheet', styleSheet);
         });
@@ -586,7 +611,7 @@
         let sidebarSmall = localStorage.getItem('sidebarSmall');
         const enableSidebarSmall = () => {
             $('html').attr('data-nav-size', 'nav-small');
-            if($('html').attr('data-nav-size') === ('nav-small')) {
+            if ($('html').attr('data-nav-size') === ('nav-small')) {
                 $('body').removeClass('hover-menu');
                 $('.main-sidebar').removeClass('sidebar-hover hoverable');
                 $('.nav-close-btn').show();
@@ -622,7 +647,7 @@
         let sidebarHover = localStorage.getItem('sidebarHover');
         const enableSidebarHover = () => {
             $('html').attr('data-nav-size', 'nav-hover');
-            if($('html').attr('data-nav-size') === ('nav-hover')) {
+            if ($('html').attr('data-nav-size') === ('nav-hover')) {
                 $('.main-sidebar').addClass('sidebar-hover hoverable').removeClass('collapsed');
                 $('body').addClass('hover-menu').removeClass('expanded');
                 $('.nav-close-btn').hide();
@@ -638,12 +663,12 @@
         $('#sidebarHover').on('click', function () {
             enableSidebarHover();
         });
-        
+
         $('#sidebarDefault').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             $('html').attr('data-nav-size', 'nav-default');
-            if($('html').attr('data-nav-size') === ('nav-default')) {
+            if ($('html').attr('data-nav-size') === ('nav-default')) {
                 $('.nav-close-btn').show();
                 if ($(window).width() > 1199) {
                     $('body').has('.main-sidebar').find('.header').removeClass('expanded')
@@ -698,8 +723,8 @@
             $('.sidebar-bg-btn[data-img="' + navbackgroundImage + '"]').addClass('active').siblings().removeClass('active');
             $('.main-sidebar').css('background-image', 'url(' + navbackgroundImage + ')');
         }
-        
-        
+
+
 
 
 
@@ -870,13 +895,13 @@
         //------------------------------------------------------------------------------------------------------------------
         // Password Show Button
         //------------------------------------------------------------------------------------------------------------------
-        $('.password-show').on('click', function(){
+        $('.password-show').on('click', function () {
             $(this).find('i').toggleClass('fa-eye-slash fa-eye');
             var textType = $(this).siblings('input').attr('type');
             var passType;
-            if(textType == 'text'){
+            if (textType == 'text') {
                 passType = 'password';
-            }else{
+            } else {
                 passType = 'text';
             }
             $(this).siblings('input').attr('type', passType);
@@ -1604,7 +1629,7 @@
             });
         }
 
-        
+
 
         //------------------------------------------------------------------------------------------------------------------
         // Icon Copy Option On Icon Page
@@ -1866,12 +1891,12 @@
         //------------------------------------------------------------------------------------------------------------------
         // File Manager Sidebar Collapse On Small Screen
         //------------------------------------------------------------------------------------------------------------------
-        if($('.file-manager-sidebar-col').length) {
-            if($(window).width() < 992) {
-                $('.file-manager-menu-btn').on('click', function(){
+        if ($('.file-manager-sidebar-col').length) {
+            if ($(window).width() < 992) {
+                $('.file-manager-menu-btn').on('click', function () {
                     $('.file-manager-sidebar-col').show();
                 });
-                $('.close-file-manager-menu-btn, .file-manager-tab-btn ').on('click', function(){
+                $('.close-file-manager-menu-btn, .file-manager-tab-btn ').on('click', function () {
                     $('.file-manager-sidebar-col').hide();
                 });
             }
@@ -1897,11 +1922,11 @@
         //------------------------------------------------------------------------------------------------------------------
         // Two Factor Verification
         //------------------------------------------------------------------------------------------------------------------
-        if($('#otp_target').length) {
+        if ($('#otp_target').length) {
             $('#otp_target').otpdesigner();
-            
-            $('.security-code-submit').on('click', function() {
-                var emptyOtpContents = $('.otp-content').filter(function() {
+
+            $('.security-code-submit').on('click', function () {
+                var emptyOtpContents = $('.otp-content').filter(function () {
                     return $(this).text().trim() === '';
                 });
 
@@ -1922,7 +1947,7 @@
                         confirmButtonClass: "btn btn-primary px-3",
                         buttonsStyling: false,
                         showCloseButton: false,
-                    }).then(function(result) {
+                    }).then(function (result) {
                         if (result.isConfirmed) {
                             window.location.href = "index.html";
                         }
@@ -1936,15 +1961,15 @@
         //------------------------------------------------------------------------------------------------------------------
         // Multi Step Sign Up Functions
         //------------------------------------------------------------------------------------------------------------------
-        if($('.multi-step-signup-panel').length) {
-            $('.next-button').on('click', function(){
+        if ($('.multi-step-signup-panel').length) {
+            $('.next-button').on('click', function () {
                 var completed_step_number = $(this).parents('.single-step').index() + 1;
                 var processing_step_number = $(this).parents('.single-step').index() + 2;
                 $(this).parents('.single-step').removeClass('show').next().addClass('show');
                 $('.step-list li:nth-child(' + completed_step_number + ')').addClass('completed');
                 $('.step-list li:nth-child(' + processing_step_number + ')').addClass('active').siblings().removeClass('active');
             });
-            $('.prev-button').on('click', function(){
+            $('.prev-button').on('click', function () {
                 var completed_step_number = $(this).parents('.single-step').index();
                 var processing_step_number = $(this).parents('.single-step').index();
                 $(this).parents('.single-step').removeClass('show').prev().addClass('show');

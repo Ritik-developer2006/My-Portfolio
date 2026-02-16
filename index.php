@@ -134,7 +134,7 @@ include_once("header.php");
                     <?php echo $sd['icon']; ?>
                     <h6 class="service-title"><?php echo $sd['heading']; ?></h6>
                     <p class="service-description"><?php echo $sd['description']; ?></p>
-                    <span class="see-more text-primary" style="cursor:pointer;">
+                    <span class="see-more text-primary more-single-service" data-id="<?php echo $sd['id']; ?>" style="cursor:pointer;">
                       See more
                     </span>
                   </div>
@@ -163,7 +163,7 @@ include_once("header.php");
                     <div class="review-header d-flex justify-content-between">
                       <div class="review-client">
                         <div class="media">
-                          <img class="img-fluid rounded-circle client-avatar" src="assets/user_images/<?php echo $td['photo']; ?>"
+                          <img class="img-fluid rounded-circle client-avatar" src="assets/user_images/<?php echo $td['photo'] ? $td['photo'] : 'unknown.jpg'; ?>"
                             alt="Client">
                           <div class="client-details">
                             <h6 class="client-name"><?php echo $td['full_name']; ?></h6>
@@ -173,27 +173,27 @@ include_once("header.php");
                       </div><i class="icon ion-md-quote review-icon"></i>
                     </div>
                     <p class="review-content"><?php echo $td['description']; ?></p>
-                    <span class="see-more text-primary" style="cursor:pointer;">
+                    <span class="see-more text-primary testimonial_detail" data-id="<?php echo $td['id'] ?>" style="cursor:pointer;">
                       See more
                     </span>
                     <span class="client-role float-right" style="font-size: 12px !important;">
                       <?php
-                      $createdAt = strtotime($td['created_at']);
-                      $now = time();
+                        $createdAt = strtotime($td['created_at']);
+                        $now = time();
 
-                      $diff = $now - $createdAt;
+                        $diff = $now - $createdAt;
 
-                      if ($diff < 60) {
-                        echo $diff . " s ago";
-                      } elseif ($diff < 3600) {
-                        echo floor($diff / 60) . " m ago";
-                      } elseif ($diff < 86400) {
-                        echo floor($diff / 3600) . " h ago";
-                      } elseif ($diff < 172800) {
-                        echo "1 day ago";
-                      } else {
-                        echo floor($diff / 86400) . " days ago";
-                      }
+                        if ($diff < 60) {
+                          echo $diff . " s ago";
+                        } elseif ($diff < 3600) {
+                          echo floor($diff / 60) . " m ago";
+                        } elseif ($diff < 86400) {
+                          echo floor($diff / 3600) . " h ago";
+                        } elseif ($diff < 172800) {
+                          echo "1 day ago";
+                        } else {
+                          echo floor($diff / 86400) . " days ago";
+                        }
                       ?>
                     </span>
                   </div>
@@ -238,7 +238,7 @@ include_once("header.php");
                     <div class="resume-item"><span class="item-arrow"></span>
                       <h5 class="item-title"><?php echo $ed['education_name']; ?></h5><span class="item-details"><?php echo $ed['university'] . ' / ' . $ed['from_year'] . ' - ' . $ed['to_year']; ?></span>
                       <p class="item-description"><?php echo $ed['description']; ?></p>
-                      <span class="see-more text-primary" style="cursor:pointer;">
+                      <span class="see-more text-primary education_detail" data-id="<?php echo $ed['id']; ?>" style="cursor:pointer;">
                         See more
                       </span>
                     </div>
@@ -253,7 +253,7 @@ include_once("header.php");
                     <div class="resume-item"><span class="item-arrow"></span>
                       <h5 class="item-title"><?php echo $exd['job_title']; ?></h5><span class="item-details"><?php echo $exd['company_name'] . ' / ' . $exd['from_year'] . ' - ' . $exd['to_year']; ?></span>
                       <p class="item-description"><?php echo $exd['description']; ?></p>
-                      <span class="see-more text-primary" style="cursor:pointer;">
+                      <span class="see-more text-primary experience_detail" data-id="<?php echo $exd['id']; ?>" style="cursor:pointer;">
                         See more
                       </span>
                     </div>
@@ -522,12 +522,13 @@ include_once("header.php");
   </div>
 </div>
 
+<!-- Feedback Form modal -->
 <div class="modal fade" id="myModal" style="z-index: 9999999; backdrop-filter: blur(5px); padding-left: unset;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="background-color: #101010; filter: drop-shadow(0px 0px 2px #009e66);">
       <div class="modal-header" style="border-bottom: 1px solid #009e66;">
         <h5 class="modal-title">Feedback Form</h5>
-        <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">X</a>
+        <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">&times;</a>
       </div>
       <div class="modal-body">
         <div class="contact-section single-section">
@@ -549,7 +550,8 @@ include_once("header.php");
                     <textarea class="form-control" id="feedback-message" name="message" placeholder="Your Feedback Message" rows="5" required="" style="height:auto;"></textarea>
                   </div>
                   <div class="col-12 form-group mb-4">
-                    <input class="form-control" id="feedback-file" type="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif">
+                    <label class="form-label" for="feedback-file">Your Picture</label>
+                    <input class="form-control" id="feedback-file" type="file" name="file" accept=".jpg,.jpeg,.png" capture="environment">
                   </div>
                   <div class="col-12 form-submit">
                     <button class="btn button-main button-scheme" id="feedback-submit" type="submit">Submit</button>
@@ -564,38 +566,32 @@ include_once("header.php");
   </div>
 </div>
 
-<div class="modal fade" id="yourProject" style="z-index: 9999999; backdrop-filter: blur(5px); padding-left: unset;">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <div class="modal-content" style="background-color: #101010; filter: drop-shadow(0px 0px 2px #009e66);">
-      <div class="modal-header" style="border-bottom: 1px solid #009e66;">
-        <h5 class="modal-title project_title">Project Detail</h5>
-        <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">X</a>
-      </div>
-      <div class="modal-body">
-        <div class="contact-section single-section" id="project_container">
-          <div class="row">
-            <div class="col-12" id="your_project">
-              <!-- data come through ajax -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Crop UI -->
+<div id="cropOverlay">
+  <div id="cropHeader">
+    <span>Crop Image</span>
+    <span id="closeCrop">&times;</span>
+  </div>
+  <div id="cropBody">
+    <img id="imagePreview">
+  </div>
+  <div id="cropFooter">
+    <button class="btn button-main button-scheme p-1 pl-3 pr-3" type="button" id="cropBtn">Done</button>
   </div>
 </div>
 
-
-<div class="modal fade" id="yourBlog" style="z-index: 9999999; backdrop-filter: blur(5px); padding-left: unset;">
+<!-- my modal for detail view -->
+<div class="modal fade" id="my_Modal" style="z-index: 9999999; backdrop-filter: blur(5px); padding-left: unset;">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content" style="background-color: #101010; filter: drop-shadow(0px 0px 2px #009e66);">
       <div class="modal-header" style="border-bottom: 1px solid #009e66;">
-        <h5 class="modal-title" id="blog_title">Blog Detail</h5>
-        <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">X</a>
+        <h5 class="modal-title" id="modal_title">Example</h5>
+        <a href="#" type="button" class="close" data-dismiss="modal" style="color: white;font-weight: 100;">&times;</a>
       </div>
       <div class="modal-body">
-        <div class="contact-section single-section" id="blog_container">
+        <div class="contact-section single-section" id="experience_container">
           <div class="row">
-            <div class="col-12" id="your_blog">
+            <div class="col-12" id="my_modal">
               <!-- data come through ajax -->
             </div>
           </div>

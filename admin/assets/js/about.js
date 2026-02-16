@@ -308,7 +308,7 @@ function getAllTestimonials() {
                                                             <div>
                                                                 <label for="icon${item.id}" class="form-label mb-2">Picture</label>
                                                                 <div class="image-preview-container">
-                                                                    <img src="../assets/user_images/${item.photo}" class="image-preview">
+                                                                    <img src="../assets/user_images/${item.photo == '' || item.photo == null ? 'unknown.jpg' : item.photo}" class="image-preview">
                                                                 </div>
                                                             </div>
                                                             <div class="flex-fill">
@@ -405,12 +405,14 @@ $("body").on("click", "#delete_now", function () {
         success: function (response) {
             if (response.status == 1) {
                 toastr.success("Testimonial delete successfully!");
+                $("#delete_testinmonial").modal("hide");
                 getAllTestimonials();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }
         },
         complete: function () {
+            $("#delete_testinmonial").modal("hide");
             $(".preloader, .preloader-icon").hide();
         },
         error: function () {
@@ -487,12 +489,14 @@ $("body").on("click", "#delete_service_now", function () {
         success: function (response) {
             if (response.status == 1) {
                 toastr.success("Service delete successfully!");
+                $("#delete_service").modal("hide");
                 getAllServices();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }
         },
         complete: function () {
+            $("#delete_service").modal("hide");
             $(".preloader, .preloader-icon").hide();
         },
         error: function () {
@@ -616,6 +620,49 @@ $("body").on("submit", ".update_basic", function (e) {
             if (response.status == 1) {
                 toastr.success("Detail updated successfully!");
                 getBasicDetails();
+            } else {
+                toastr.error("Something went wrong, Try again!");
+            }
+        },
+        complete: function () {
+            $(".preloader, .preloader-icon").hide();
+        },
+        error: function () {
+            toastr.error("Internal sever error");
+        }
+    });
+});
+
+$("body").on("click", ".close_service_modal", function () {
+    $("#add_service_modal").modal("hide");
+});
+
+$("body").on("click", "#add_service", function () {
+    $("#add_service_modal").modal("show");
+});
+
+$("body").on("submit", "#add_service_form", function (e) {
+    e.preventDefault(); // stop normal submit
+
+    let form = this;
+    let formData = new FormData(form);
+    formData.append("method", "addService");
+
+    $.ajax({
+        type: "POST",
+        url: "/API/adminApi.php",
+        data: formData,
+        dataType: "JSON",
+        processData: false, // REQUIRED
+        contentType: false, // REQUIRED
+        beforeSend: function () {
+            $(".preloader, .preloader-icon").show();
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                toastr.success("Service added successfully!");
+                $("#add_service_modal").modal("hide");
+                getAllServices();
             } else {
                 toastr.error("Something went wrong, Try again!");
             }
